@@ -9,6 +9,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using Npgsql.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+
+using monoMVC.Data;
+using monoMVC.Services;
+
 namespace monoMVC
 {
     public class Startup
@@ -23,6 +29,16 @@ namespace monoMVC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+	    services.AddDbContext<ApplicationDbContext>( options =>
+	    {
+		string connectionString = Configuration.GetConnectionString("DefaultConnection");
+		options.UseNpgsql(connectionString);
+
+	    });
+
+	    services.AddScoped<IVehicleMakeService, VehicleMakeService>();
+	    services.AddScoped<IVehicleModelService, VehicleModelService>();
+    
             services.AddControllersWithViews();
         }
 
