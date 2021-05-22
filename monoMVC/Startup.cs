@@ -36,6 +36,8 @@ namespace monoMVC
 
 	    });
 
+	    services.AddAutoMapper(typeof(Startup));
+
 	    services.AddScoped<IVehicleMakeService, VehicleMakeService>();
 	    services.AddScoped<IVehicleModelService, VehicleModelService>();
     

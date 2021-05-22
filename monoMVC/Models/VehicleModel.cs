@@ -6,19 +6,10 @@ using System.Threading.Tasks;
 
 namespace monoMVC.Models
 {
-    public class VehicleModel
+    public class VehicleModel : VehicleDTO.VehicleModel
     {
-         public int Id {get; set;}
-
-	 public int MakeId {get; set;}
-	
-	 [Required]
-       	 [StringLength(200)]
-         public string Name { get; set; }
-
-         [StringLength(100)]
-         public string Abbrevation { get; set; }
-
+    
 	 public VehicleMake VehicleMake { get; set; }
+
     }
 }

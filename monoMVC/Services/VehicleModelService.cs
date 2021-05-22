@@ -7,8 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
+using AutoMapper;
+
 using monoMVC.Models;
 using monoMVC.Data;
+using monoMVC.Infrastructure;
 
 namespace monoMVC.Services
 {
@@ -16,64 +19,63 @@ namespace monoMVC.Services
 	{
 	
  		private readonly ApplicationDbContext _context;
+		private readonly IMapper _mapper;
  		
- 		public VehicleModelService(ApplicationDbContext context)
+ 		public VehicleModelService(ApplicationDbContext context, IMapper mapper)
  		{
  			_context = context;
+			_mapper = mapper;
  		}
  		
     		public async Task<List<VehicleModel>> getVehiclesAsync()
     		{
-    			List<VehicleModel> response = new List<VehicleModel>();
-	 
-    			var res = await _context.VehicleModel.Include(v => v.VehicleMake).ToListAsync();
+    			
+    			var res = await _context.VehicleModel.AsNoTracking().Include(v => v.VehicleMake).Select(v => v.MapVehicleModelResponse()).ToListAsync();
     			 
-    			return (List<VehicleModel>)Convert.ChangeType(res, typeof(List<VehicleModel>));
-    					 
+    			return _mapper.Map<List<VehicleModel>>(res);				 
     		}
     		
     		public async Task<VehicleModel> getVehicleByIdAsync(int id)
     		{
     			var res = await _context.VehicleModel
+			    	  	.AsNoTracking()
     					.Include(v => v.VehicleMake)
-    					.FirstOrDefaultAsync(m => m.Id == id);
+    					.FirstOrDefaultAsync(v => v.Id == id);
     			
-    			return (VehicleModel)Convert.ChangeType(res, typeof(VehicleModel));
+    			return _mapper.Map<VehicleModel>(res.MapVehicleModelResponse());
     		}
     		
     		public async Task<List<VehicleModel>> getVehiclesByNameAsync(string name)
     		{
     			 
-    			var res = await _context.VehicleModel.Where(v => v.Name.Contains(name)).ToListAsync();
+    			var res = await _context.VehicleModel.AsNoTracking().Where(v => v.Name.Contains(name)).Select(v => v.MapVehicleModelResponse()).ToListAsync();
     			 
-    			return (List<VehicleModel>)Convert.ChangeType(res, typeof(List<VehicleModel>));
+    			return _mapper.Map<List<VehicleModel>>(res);
+			
     		}
     		
     		public async Task<List<VehicleModel>> getSortedVehiclesAsync(string sortOrder, int currentPage, int pageSize)
     		{
-    			List<VehicleModel> response = new List<VehicleModel>();
-    			
-    			var res = new List<VehicleModel>();
+
+			var res = new List<VehicleModel>();
     			
     			switch(sortOrder)
     			{
     				case "idDesc":
-    					res = await _context.VehicleModel.OrderByDescending(v => v.Id).Skip((currentPage-1)*pageSize).ToListAsync();
+    					res = _mapper.Map<List<VehicleModel>>(await _context.VehicleModel.AsNoTracking().OrderByDescending(v => v.Id).Skip((currentPage-1)*pageSize).Select(v => v.MapVehicleModelResponse()).ToListAsync());
     					break;
     				case "nameDesc":
-    					res = await _context.VehicleModel.OrderByDescending(v => v.Name).Skip((currentPage-1)*pageSize).ToListAsync();
+    					res = _mapper.Map<List<VehicleModel>>(await _context.VehicleModel.AsNoTracking().OrderByDescending(v => v.Name).Skip((currentPage-1)*pageSize).Select(v => v.MapVehicleModelResponse()).ToListAsync());
     					break;
     				case "abbrevationDesc":
-    					res = await _context.VehicleModel.OrderByDescending(v => v.Abbrevation).Skip((currentPage-1)*pageSize).ToListAsync();
+    					res = _mapper.Map<List<VehicleModel>>(await _context.VehicleModel.AsNoTracking().OrderByDescending(v => v.Abbrevation).Skip((currentPage-1)*pageSize).Select(v => v.MapVehicleModelResponse()).ToListAsync());
     					break;
     				default:
-    					res = await _context.VehicleModel.OrderBy(v => v.Id).Skip((currentPage-1)*pageSize).ToListAsync();
+    					res = _mapper.Map<List<VehicleModel>>(await _context.VehicleModel.AsNoTracking().OrderBy(v => v.Id).Skip((currentPage-1)*pageSize).Select(v => v.MapVehicleModelResponse()).ToListAsync());
     					break;
     				}
     				
-    			response = (List<VehicleModel>)Convert.ChangeType(res, typeof(List<VehicleModel>));
-    			 
-    			return response;
+    			return res;
     		
     		}
     		
@@ -83,32 +85,62 @@ namespace monoMVC.Services
   
     		}
     		
-    		public async Task<List<T>> getVehiclesMakeWithoutVModelAsync<T>()
+    		public async Task<List<VehicleMake>> getVehiclesMakeWithoutVModelAsync()
     		{
-    			var res = await _context.VehicleMake.Where(v => v.VehicleModel.Equals(null)).ToListAsync();
+		
+    			var res = await _context.VehicleMake.AsNoTracking().Where(v => v.VehicleModel.Equals(null)).Select(v => v.MapVehicleMakeResponse()).ToListAsync();
     			
-    			return (List<T>)Convert.ChangeType(res, typeof(List<T>));
+    			return _mapper.Map<List<VehicleMake>>(res);
+			
     		} 		
     		
     		public async Task saveChangesAsync()
     		{
-    			await _context.SaveChangesAsync();
+			try
+			{
+				await _context.SaveChangesAsync();
+			}
+			catch(Exception e)
+			{
+				Console.WriteLine(e);
+			}
     		}
     		
     		public void addVehicle<T>(T vehicle)
     		{
-    			_context.Add(vehicle);
+			try
+			{
+				_context.Add(vehicle);
+			}
+			catch(Exception e)
+			{
+				Console.WriteLine(e);	
+			}
+			
     		}
     		
     		public void updateVehicle<T>(T vehicle)
     		{
-    			_context.Update(vehicle);
+			try
+			{
+				_context.Update(vehicle);
+			}
+			catch(Exception e) 
+			{
+				Console.WriteLine(e);	
+			}
     		}
     		
     		public void removeVehicle(VehicleModel vehicle)
     		{
-    			 _context.VehicleModel.Remove((VehicleModel)Convert.ChangeType(vehicle,typeof(VehicleModel)));
-    			 
+			try
+			{
+				_context.VehicleModel.Remove(vehicle);
+    			}
+			catch(Exception e)
+			{
+				Console.WriteLine(e);	
+			}
     		}
     
 	}

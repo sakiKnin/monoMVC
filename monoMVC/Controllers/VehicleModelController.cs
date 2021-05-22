@@ -43,7 +43,7 @@ namespace monoMVC.Controllers
         // GET: VehicleModel/Create
         public async Task<IActionResult> Create()
         {
-	    ViewData["MakeId"] = new SelectList(await _service.getVehiclesMakeWithoutVModelAsync<VehicleMake>(), "Id", "Name");
+	    ViewData["MakeId"] = new SelectList(await _service.getVehiclesMakeWithoutVModelAsync(), "Id", "Name");
             return View();
         }
 

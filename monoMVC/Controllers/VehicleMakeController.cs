@@ -43,6 +43,7 @@ namespace monoMVC.Controllers
 	    ViewData["CurrentFilter"] = searchString;
 
 	    int count = _service.getCount();
+	    
 	    if(count==0)
 	    {
 		return View();
@@ -67,12 +68,8 @@ namespace monoMVC.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var vehicleMake = await _service.getVehicleByIdAsync(id);
-            if (vehicleMake == null)
-            {
-                return NotFound();
-            }
-
-            return View(vehicleMake);
+            
+            return vehicleMake==null ? NotFound() : View(vehicleMake);
         }
         
         // GET: VehicleMake/Create
@@ -103,11 +100,8 @@ namespace monoMVC.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var vehicleMake = await _service.getVehicleByIdAsync(id);
-            if (vehicleMake == null)
-            {
-                return NotFound();
-            }
-            return View(vehicleMake);
+            
+            return vehicleMake==null ? NotFound() : View(vehicleMake);
         }
 
         	
@@ -151,13 +145,8 @@ namespace monoMVC.Controllers
         {
 	
 	    var vehicleMake = await _service.getVehicleByIdAsync(id);
-            
-            if (vehicleMake == null)
-            {
-		return NotFound();
-	    }
-
-	    return View(vehicleMake);
+           
+	    return vehicleMake==null ? NotFound() : View(vehicleMake);
 
 	 }
              
@@ -176,12 +165,9 @@ namespace monoMVC.Controllers
         private bool VehicleMakeExists(int id)
         {
 	    var vehicleMake = _service.getVehicleByIdAsync(id);
-	    if(vehicleMake==null)
-	    {
-		return false;
-	    }
 
-		return true;
+	    return vehicleMake==null?false:true;
+	    
             //return _context.VehicleMake.Any(e => e.Id == id);
         }
     }
