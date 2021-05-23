@@ -8,7 +8,7 @@ namespace VehicleDTO
 {
     public class VehicleMake
     {
-
+    
        public int Id { get; set; }
 
        [Required]
@@ -17,6 +17,6 @@ namespace VehicleDTO
 
        [StringLength(100)]
        public string Abbrevation { get; set; }
-      
+ 
     }
 }

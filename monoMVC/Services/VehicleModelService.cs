@@ -45,37 +45,37 @@ namespace monoMVC.Services
     			return _mapper.Map<VehicleModel>(res.MapVehicleModelResponse());
     		}
     		
-    		public async Task<List<VehicleModel>> getVehiclesByNameAsync(string name)
-    		{
-    			 
-    			var res = await _context.VehicleModel.AsNoTracking().Where(v => v.Name.Contains(name)).Select(v => v.MapVehicleModelResponse()).ToListAsync();
-    			 
-    			return _mapper.Map<List<VehicleModel>>(res);
-			
-    		}
-    		
-    		public async Task<List<VehicleModel>> getSortedVehiclesAsync(string sortOrder, int currentPage, int pageSize)
+    		public async Task<List<VehicleModel>> getSortedVehiclesAsync(string sortOrder, string searchString, int currentPage, int pageSize)
     		{
 
-			var res = new List<VehicleModel>();
+			var res = new List<VehicleDTO.VehicleModelResponse>();
+
+			if(!String.IsNullOrEmpty(searchString))
+			{
+
+				res = await _context.VehicleModel.AsNoTracking().Where(v => v.Name.Contains(searchString)).Select(v => v.MapVehicleModelResponse()).ToListAsync();
+    			 
+				return _mapper.Map<List<VehicleModel>>(res);
+
+			}
     			
     			switch(sortOrder)
     			{
     				case "idDesc":
-    					res = _mapper.Map<List<VehicleModel>>(await _context.VehicleModel.AsNoTracking().OrderByDescending(v => v.Id).Skip((currentPage-1)*pageSize).Select(v => v.MapVehicleModelResponse()).ToListAsync());
+    					res = await _context.VehicleModel.AsNoTracking().OrderByDescending(v => v.Id).Skip((currentPage-1)*pageSize).Select(v => v.MapVehicleModelResponse()).ToListAsync();
     					break;
     				case "nameDesc":
-    					res = _mapper.Map<List<VehicleModel>>(await _context.VehicleModel.AsNoTracking().OrderByDescending(v => v.Name).Skip((currentPage-1)*pageSize).Select(v => v.MapVehicleModelResponse()).ToListAsync());
+    					res = await _context.VehicleModel.AsNoTracking().OrderByDescending(v => v.Name).Skip((currentPage-1)*pageSize).Select(v => v.MapVehicleModelResponse()).ToListAsync();
     					break;
     				case "abbrevationDesc":
-    					res = _mapper.Map<List<VehicleModel>>(await _context.VehicleModel.AsNoTracking().OrderByDescending(v => v.Abbrevation).Skip((currentPage-1)*pageSize).Select(v => v.MapVehicleModelResponse()).ToListAsync());
+    					res = await _context.VehicleModel.AsNoTracking().OrderByDescending(v => v.Abbrevation).Skip((currentPage-1)*pageSize).Select(v => v.MapVehicleModelResponse()).ToListAsync();
     					break;
     				default:
-    					res = _mapper.Map<List<VehicleModel>>(await _context.VehicleModel.AsNoTracking().OrderBy(v => v.Id).Skip((currentPage-1)*pageSize).Select(v => v.MapVehicleModelResponse()).ToListAsync());
+    					res = await _context.VehicleModel.AsNoTracking().OrderBy(v => v.Id).Skip((currentPage-1)*pageSize).Select(v => v.MapVehicleModelResponse()).ToListAsync();
     					break;
     				}
     				
-    			return res;
+    			return _mapper.Map<List<VehicleModel>>(res);
     		
     		}
     		

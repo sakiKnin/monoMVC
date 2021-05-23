@@ -44,36 +44,37 @@ namespace monoMVC.Services
     			return _mapper.Map<VehicleMake>(res.MapVehicleMakeResponse());
     			
     		}
-    		 
-    		public async Task<List<VehicleMake>> getVehiclesByNameAsync(string name)
+    		  		
+    		public async Task<List<VehicleMake>> getSortedVehiclesAsync(string sortOrder, string searchString, int currentPage, int pageSize)
     		{
+			var res = new List<VehicleDTO.VehicleMakeResponse>();
+
+			if(!String.IsNullOrEmpty(searchString))
+			{
+			
+				res = await _context.VehicleMake.AsNoTracking().Where(v => v.Name.Contains(searchString)).Select(v => v.MapVehicleMakeResponse()).ToListAsync();
     			 
-    			var res = await _context.VehicleMake.AsNoTracking().Where(v => v.Name.Contains(name)).Select(v => v.MapVehicleMakeResponse()).ToListAsync();
-    			 
-    			return _mapper.Map<List<VehicleMake>>(res);
-    		}
-    		
-    		public async Task<List<VehicleMake>> getSortedVehiclesAsync(string sortOrder, int currentPage, int pageSize)
-    		{
-			var res = new List<VehicleMake>();
+				return _mapper.Map<List<VehicleMake>>(res);
+				
+			}
 				
     			switch(sortOrder)
     			{
     				case "idDesc":
-    					res = _mapper.Map<List<VehicleMake>>(await _context.VehicleMake.AsNoTracking().OrderByDescending(v => v.Id).Skip((currentPage-1)*pageSize).Take(pageSize).Select(v => v.MapVehicleMakeResponse()).ToListAsync());
+    					res = await _context.VehicleMake.AsNoTracking().OrderByDescending(v => v.Id).Skip((currentPage-1)*pageSize).Take(pageSize).Select(v => v.MapVehicleMakeResponse()).ToListAsync();
     					break;
     				case "nameDesc":
-    					res = _mapper.Map<List<VehicleMake>>(await _context.VehicleMake.AsNoTracking().OrderByDescending(v => v.Name).Skip((currentPage-1)*pageSize).Take(pageSize).Select(v => v.MapVehicleMakeResponse()).ToListAsync());
+    					res = await _context.VehicleMake.AsNoTracking().OrderByDescending(v => v.Name).Skip((currentPage-1)*pageSize).Take(pageSize).Select(v => v.MapVehicleMakeResponse()).ToListAsync();
     					break;
     				case "abbrevationDesc":
-    					res = _mapper.Map<List<VehicleMake>>(await _context.VehicleMake.AsNoTracking().OrderByDescending(v => v.Abbrevation).Skip((currentPage-1)*pageSize).Take(pageSize).Select(v => v.MapVehicleMakeResponse()).ToListAsync());
+    					res = await _context.VehicleMake.AsNoTracking().OrderByDescending(v => v.Abbrevation).Skip((currentPage-1)*pageSize).Take(pageSize).Select(v => v.MapVehicleMakeResponse()).ToListAsync();
     					break;
     				default:
-    					res = _mapper.Map<List<VehicleMake>>(await _context.VehicleMake.AsNoTracking().OrderBy(v => v.Id).Skip((currentPage-1)*pageSize).Take(pageSize).Select(v => v.MapVehicleMakeResponse()).ToListAsync());
+    					res = await _context.VehicleMake.AsNoTracking().OrderBy(v => v.Id).Skip((currentPage-1)*pageSize).Take(pageSize).Select(v => v.MapVehicleMakeResponse()).ToListAsync();
     					break;
     				}
     			 
-    			return res;
+    			return _mapper.Map<List<VehicleMake>>(res);
     		
     		}
     		

@@ -16,8 +16,7 @@ namespace monoMVC.Services{
 	
 		Task<List<VehicleMake>> getVehiclesAsync();
 		Task<VehicleMake> getVehicleByIdAsync(int id);
-		Task<List<VehicleMake>> getVehiclesByNameAsync(string name);
-		Task<List<VehicleMake>> getSortedVehiclesAsync(string sortOrder, int currentPage, int PageSize);
+		Task<List<VehicleMake>> getSortedVehiclesAsync(string sortOrder, string searchString, int currentPage, int PageSize);
 		int getCount();
 		Task saveChangesAsync();
 		void addVehicle<T>(T vehicle);
