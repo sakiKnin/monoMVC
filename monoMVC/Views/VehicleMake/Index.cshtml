@@ -24,6 +24,26 @@ else
 		<a asp-action="Index">Back to full list</a>
 	   </p>
       </div>
+      <div>
+</form>
+<form asp-action="Index" method="post">
+      <div class="form-action no-color">
+      	    <p>Page size:
+		<select type="number" name="pageSize" onChange='this.form.submit()'>
+			@for(var i=1; i<=10; i++)
+			{
+				 @if(i != (int)ViewData["PageSize"])
+				 {
+					<option value="@i">@i</option>
+				 }
+				 else
+				 {
+					<option value="@ViewData["PageSize"]" selected>@ViewData["PageSize"]</option>
+				 }
+		        }
+		</select>
+	    </p>
+      </div>
 </form>
 
 <table class="table">
@@ -75,4 +95,5 @@ else
     </ul>
 </div>
 }
+
 

@@ -23,14 +23,20 @@ namespace monoMVC.Controllers
         }
 
         // GET: VehicleMake
-        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? currentPage)
+        public async Task<IActionResult> Index(int pageSize, string sortOrder, string currentFilter, string searchString, int? currentPage)
         {
 	    ViewData["CurrentSort"] = sortOrder;
 	    ViewData["IdSortParam"] = String.IsNullOrEmpty(sortOrder) ? "idDesc": "";
 	    ViewData["NameSortParam"] = String.IsNullOrEmpty(sortOrder) ? "nameDesc": "";
 	    ViewData["AbbrevationSortParam"] = String.IsNullOrEmpty(sortOrder) ? "abbrevationDesc": "";
-	    
 
+	    if(pageSize==0)
+	    {
+		pageSize=1;
+	    }
+	    
+	    ViewData["PageSize"] = pageSize;
+	    
 	    if (searchString != null)
 	    {
 		currentPage=1;
@@ -50,7 +56,7 @@ namespace monoMVC.Controllers
 	    }
 	    else
 	    {
-		int pageSize=2;
+		
 		var veh = await _service.getSortedVehiclesAsync(sortOrder, currentPage ?? 1, pageSize);
 
 		if(!String.IsNullOrEmpty(searchString))
