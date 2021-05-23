@@ -10,17 +10,17 @@ namespace monoMVC
 	public int PageIndex { get; private set; }
 	public int TotalPages { get; private set; }
 
-	public PaginatedList(List<T> items, int count, int pageIndex, int pageSize)
+	public PaginatedList(List<T> items, int count, int currentPage, int pageSize)
 	{
-		PageIndex = pageIndex;
+		PageIndex = currentPage;
 		TotalPages = (int)Math.Ceiling(decimal.Divide(count, pageSize));
 
 		this.AddRange(items);
 	}
              
-	public static async Task<PaginatedList<T>> CreateAsync(List<T> source, int count, int pageIndex, int pageSize)
+	public static async Task<PaginatedList<T>> CreateAsync(List<T> source, int count, int currentPage, int pageSize)
 	{
-		return new PaginatedList<T> (source, count, pageIndex, pageSize);
+		return new PaginatedList<T> (source, count, currentPage, pageSize);
 	}
 
    }

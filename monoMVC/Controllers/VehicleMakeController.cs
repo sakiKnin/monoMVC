@@ -57,12 +57,16 @@ namespace monoMVC.Controllers
 	    else
 	    {
 		
-		var veh = await _service.getSortedVehiclesAsync(sortOrder, currentPage ?? 1, pageSize);
+		var veh = new List<VehicleMake>();
 
 		if(!String.IsNullOrEmpty(searchString))
 		{
 			veh = await _service.getVehiclesByNameAsync(searchString);
 	    	}
+		else
+		{
+			veh = await _service.getSortedVehiclesAsync(sortOrder, currentPage ?? 1, pageSize);
+		}
 
 	        return View(await PaginatedList<VehicleMake>.CreateAsync(veh, count, currentPage ?? 1, pageSize));	
 	   }
