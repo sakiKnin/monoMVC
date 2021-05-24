@@ -13,10 +13,13 @@ namespace VehicleDTO
 	 public int MakeId {get; set;}
 	
 	 [Required]
-       	 [StringLength(200)]
+       	 [StringLength(200, MinimumLength=3)]
+	 [Display(Name="Vehicle Name")]
          public string Name { get; set; }
 
-         [StringLength(100)]
+	 [Required]
+         [StringLength(100, MinimumLength=3)]
+	 [Display(Name="Vehicle Abbrevation")]
          public string Abbrevation { get; set; }
     }
 }
