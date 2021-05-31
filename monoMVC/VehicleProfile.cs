@@ -12,8 +12,8 @@ namespace monoMVC
 	{
 		public VehicleProfile()
 		{
-			CreateMap<VehicleDTO.VehicleMakeResponse, VehicleMake>();
-			CreateMap<VehicleDTO.VehicleModelResponse, VehicleModel>();
+			CreateMap<VehicleDTO.Models.VehicleMakeResponse, VehicleDTO.Models.VehicleMake>();
+			CreateMap<VehicleDTO.Models.VehicleModelResponse, VehicleDTO.Models.VehicleModel>();
 		}
 	}
 }

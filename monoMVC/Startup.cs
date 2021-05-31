@@ -12,7 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Npgsql.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-using monoMVC.Data;
+using VehicleDTO.Data;
 using monoMVC.Services;
 
 namespace monoMVC

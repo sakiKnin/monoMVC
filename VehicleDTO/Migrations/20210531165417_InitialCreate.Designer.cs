@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using monoMVC.Data;
+using VehicleDTO.Data;
 
-namespace monoMVC.Migrations
+namespace VehicleDTO.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210524093323_InitialCreate-Part2")]
-    partial class InitialCreatePart2
+    [Migration("20210531165417_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,7 +20,7 @@ namespace monoMVC.Migrations
                 .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("monoMVC.Models.VehicleMake", b =>
+            modelBuilder.Entity("VehicleDTO.Models.VehicleMake", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -45,7 +45,7 @@ namespace monoMVC.Migrations
                     b.ToTable("VehicleMake");
                 });
 
-            modelBuilder.Entity("monoMVC.Models.VehicleModel", b =>
+            modelBuilder.Entity("VehicleDTO.Models.VehicleModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -53,6 +53,7 @@ namespace monoMVC.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Abbrevation")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
@@ -72,11 +73,11 @@ namespace monoMVC.Migrations
                     b.ToTable("VehicleModel");
                 });
 
-            modelBuilder.Entity("monoMVC.Models.VehicleModel", b =>
+            modelBuilder.Entity("VehicleDTO.Models.VehicleModel", b =>
                 {
-                    b.HasOne("monoMVC.Models.VehicleMake", "VehicleMake")
+                    b.HasOne("VehicleDTO.Models.VehicleMake", "VehicleMake")
                         .WithOne("VehicleModel")
-                        .HasForeignKey("monoMVC.Models.VehicleModel", "MakeId")
+                        .HasForeignKey("VehicleDTO.Models.VehicleModel", "MakeId")
                         .HasConstraintName("VehicleModelFK")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -84,7 +85,7 @@ namespace monoMVC.Migrations
                     b.Navigation("VehicleMake");
                 });
 
-            modelBuilder.Entity("monoMVC.Models.VehicleMake", b =>
+            modelBuilder.Entity("VehicleDTO.Models.VehicleMake", b =>
                 {
                     b.Navigation("VehicleModel");
                 });

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using monoMVC.Models;
-namespace monoMVC.Data
+using VehicelDTO.Models;
+
+namespace VehicleDTO.Data
 {
     public class ApplicationDbContext : DbContext
     {

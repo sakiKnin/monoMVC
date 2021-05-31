@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
-using monoMVC.Models;
+using VehicleDTO.Models;
 
 using monoMVC.Services;
 

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore;
 
 using AutoMapper;
 
-using monoMVC.Models;
-using monoMVC.Data;
+using VehicleDTO.Models;
+using VehicleDTO.Data;
 using monoMVC.Infrastructure;
 
 namespace monoMVC.Services
@@ -47,7 +47,7 @@ namespace monoMVC.Services
     		  		
     		public async Task<List<VehicleMake>> GetSortedVehiclesAsync(string sortOrder, string searchString, int currentPage, int pageSize)
     		{
-			var res = new List<VehicleDTO.VehicleMakeResponse>();
+			var res = new List<VehicleMakeResponse>();
 
 			if(!String.IsNullOrEmpty(searchString))
 			{
@@ -70,7 +70,7 @@ namespace monoMVC.Services
     					res = await _context.VehicleMake.AsNoTracking().OrderByDescending(v => v.Abbrevation).Skip((currentPage-1)*pageSize).Take(pageSize).Select(v => v.MapVehicleMakeResponse()).ToListAsync();
     					break;
     				default:
-    					//res = await _context.VehicleMake.AsNoTracking().OrderBy(v => v.Id).Skip((currentPage-1)*pageSize).Take(pageSize).Select(v => v.MapVehicleMakeResponse()).ToListAsync();
+    					res = await _context.VehicleMake.AsNoTracking().OrderBy(v => v.Id).Skip((currentPage-1)*pageSize).Take(pageSize).Select(v => v.MapVehicleMakeResponse()).ToListAsync();
     					break;
     				}
     			 

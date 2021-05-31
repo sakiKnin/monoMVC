@@ -4,11 +4,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace VehicleDTO
+namespace VehicleDTO.Models
 {
     public class VehicleModel
     {
-         public int Id {get; set;}
+
+	 public int Id {get; set;}
 
 	 public int MakeId {get; set;}
 	
@@ -21,5 +22,8 @@ namespace VehicleDTO
          [StringLength(100, MinimumLength=3)]
 	 [Display(Name="Vehicle Abbrevation")]
          public string Abbrevation { get; set; }
+    
+	 public VehicleMake VehicleMake { get; set; }
+
     }
 }

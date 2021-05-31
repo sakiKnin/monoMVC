@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore;
 
 using AutoMapper;
 
-using monoMVC.Models;
-using monoMVC.Data;
+using VehicleDTO.Models;
+using VehicleDTO.Data;
 using monoMVC.Infrastructure;
 
 namespace monoMVC.Services
@@ -48,7 +48,7 @@ namespace monoMVC.Services
     		public async Task<List<VehicleModel>> GetSortedVehiclesAsync(string sortOrder, string searchString, int currentPage, int pageSize)
     		{
 
-			var res = new List<VehicleDTO.VehicleModelResponse>();
+			var res = new List<VehicleModelResponse>();
 
 			if(!String.IsNullOrEmpty(searchString))
 			{

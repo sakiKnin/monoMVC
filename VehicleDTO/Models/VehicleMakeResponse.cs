@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace VehicleDTO
+namespace VehicleDTO.Models
 {
     public class VehicleMakeResponse : VehicleMake
     {
