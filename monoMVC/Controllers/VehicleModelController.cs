@@ -18,33 +18,39 @@ namespace monoMVC.Controllers
 
         public VehicleModelController(IVehicleModelService service)
         {
+	
 	    _service = service;
+	    
         }
 
         // GET: VehicleModel
         public async Task<IActionResult> Index()
         {
-	    var applicationDbContext = _service.getVehiclesAsync();
+	    var applicationDbContext = _service.GetVehiclesAsync();
             return View(await applicationDbContext);
         }
 
         // GET: VehicleModel/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var vehicleModel = await _service.getVehicleByIdAsync(id);
-            if (vehicleModel == null)
+            var vehicle = await _service.GetVehicleByIdAsync(id);
+            if (vehicle == null)
             {
+	    
                 return NotFound();
+		
             }
 
-            return View(vehicleModel);
+            return View(vehicle);
         }
 
         // GET: VehicleModel/Create
         public async Task<IActionResult> Create()
         {
-	    ViewData["MakeId"] = new SelectList(await _service.getVehiclesMakeWithoutVModelAsync(), "Id", "Name");
+	
+	    ViewData["MakeId"] = new SelectList(await _service.GetVehiclesMakeWithoutVModelAsync(), "Id", "Name");
             return View();
+	    
         }
 
         // POST: VehicleModel/Create
@@ -52,29 +58,34 @@ namespace monoMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,MakeId,Name,Abbrevation")] VehicleModel vehicleModel)
+        public async Task<IActionResult> Create([Bind("Id,MakeId,Name,Abbrevation")] VehicleModel vehicle)
         {
             if (ModelState.IsValid)
             {
-                _service.addVehicle<VehicleModel>(vehicleModel);
-                await _service.saveChangesAsync();
+                _service.AddVehicle<VehicleModel>(vehicle);
+                await _service.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 	   
-            return View(vehicleModel);
+            return View(vehicle);
         }
 
         // GET: VehicleModel/Edit/5
         public async Task<IActionResult> Edit(int id)
         {  
-            var vehicleModel = await _service.getVehicleByIdAsync(id);
+            var vehicle = await _service.GetVehicleByIdAsync(id);
 
-	    if (vehicleModel == null)
+	    if (vehicle == null)
             {
+	    
                 return NotFound();
+		
             }
-	    ViewData["MakeId"] = vehicleModel.MakeId;
-            return View(vehicleModel);
+	    
+	    ViewData["MakeId"] = vehicle.MakeId;
+	    
+            return View(vehicle);
+	    
         }
 
         // POST: VehicleModel/Edit/5
@@ -82,25 +93,31 @@ namespace monoMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,MakeId,Name,Abbrevation")] VehicleModel vehicleModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,MakeId,Name,Abbrevation")] VehicleModel vehicle)
         {
-            if (id != vehicleModel.Id)
+            if (id != vehicle.Id)
             {
+	    
                 return NotFound();
+		
             }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                   _service.updateVehicle<VehicleModel>(vehicleModel);
-                   await _service.saveChangesAsync();
+		
+                   _service.UpdateVehicle<VehicleModel>(vehicle);
+                   await _service.SaveChangesAsync();
+		   
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VehicleModelExists(vehicleModel.Id))
+                    if (!VehicleModelExists(vehicle.Id))
                     {
+		    
                         return NotFound();
+			
                     }
                     else
                     {
@@ -110,20 +127,21 @@ namespace monoMVC.Controllers
                 return RedirectToAction(nameof(Index));
             }
 	    
-            return View(vehicleModel);
+            return View(vehicle);
         }
 
         // GET: VehicleModel/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
 
-            var vehicleModel = await _service.getVehicleByIdAsync(id);
-            if (vehicleModel == null)
+            var vehicle = await _service.GetVehicleByIdAsync(id);
+	    
+            if (vehicle == null)
             {
                 return NotFound();
             }
 
-            return View(vehicleModel);
+            return View(vehicle);
         }
 
         // POST: VehicleModel/Delete/5
@@ -131,15 +149,15 @@ namespace monoMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var vehicleModel = await _service.getVehicleByIdAsync(id);
-            _service.removeVehicle(vehicleModel);
-            await _service.saveChangesAsync();
+            var vehicleModel = await _service.GetVehicleByIdAsync(id);
+            _service.RemoveVehicle(vehicleModel);
+            await _service.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool VehicleModelExists(int id)
         {
-	    if(_service.getVehicleByIdAsync(id)==null)
+	    if(_service.GetVehicleByIdAsync(id)==null)
 	    {
 				return true; 
 	    }

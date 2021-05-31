@@ -14,15 +14,15 @@ namespace monoMVC.Services{
 	public interface IVehicleModelService
 	{
 	
-		Task<List<VehicleModel>> getVehiclesAsync();
-		Task<VehicleModel> getVehicleByIdAsync(int id);
-		Task<List<VehicleModel>> getSortedVehiclesAsync(string sortOrder, string searchString, int currentPage, int PageSize);
-		int getCount();
-		Task<List<VehicleMake>> getVehiclesMakeWithoutVModelAsync();
-		Task saveChangesAsync();
-		void addVehicle<T>(T vehicle);
-		void updateVehicle<T>(T vehicle);
-		void removeVehicle(VehicleModel vehicle);
+		Task<List<VehicleModel>> GetVehiclesAsync();
+		Task<VehicleModel> GetVehicleByIdAsync(int id);
+		Task<List<VehicleModel>> GetSortedVehiclesAsync(string sortOrder, string searchString, int currentPage, int PageSize);
+		Task<int> GetCountAsync();
+		Task<List<VehicleMake>> GetVehiclesMakeWithoutVModelAsync();
+		Task SaveChangesAsync();
+		void AddVehicle<T>(T vehicle);
+		void UpdateVehicle<T>(T vehicle);
+		void RemoveVehicle(VehicleModel vehicle);
 		
 	}
 	

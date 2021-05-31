@@ -8,7 +8,8 @@ namespace monoMVC.Data
             : base(options)
         {
 
-        }   
+        }
+	
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<VehicleMake>()
@@ -25,7 +26,9 @@ namespace monoMVC.Data
             		    .HasForeignKey<VehicleModel>(a => a.MakeId).HasConstraintName("VehicleModelFK");
 
 	}
+	
         public DbSet<VehicleMake> VehicleMake { get; set; } 
         public DbSet<VehicleModel> VehicleModel { get; set; }
+	
     }
 }

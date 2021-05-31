@@ -19,7 +19,9 @@ namespace monoMVC.Controllers
 
         public VehicleMakeController(IVehicleMakeService service)
         {
+	
             _service = service;
+	    
         }
 
         // GET: VehicleMake
@@ -48,16 +50,18 @@ namespace monoMVC.Controllers
 
 	    ViewData["CurrentFilter"] = searchString;
 
-	    int count = _service.getCount();
+	    int count = await _service.GetCountAsync();
 	    
 	    if(count==0)
 	    {
+	    
 		return View();
+		
 	    }
 	    else
 	    {
 		
-		var veh = await _service.getSortedVehiclesAsync(sortOrder, searchString, currentPage ?? 1, pageSize);
+		var veh = await _service.GetSortedVehiclesAsync(sortOrder, searchString, currentPage ?? 1, pageSize);
 		
 	        return View(await PaginatedList<VehicleMake>.CreateAsync(veh, count, currentPage ?? 1, pageSize));	
 	   }
@@ -68,15 +72,19 @@ namespace monoMVC.Controllers
         // GET: VehicleMake/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var vehicleMake = await _service.getVehicleByIdAsync(id);
+	
+            var vehicle = await _service.GetVehicleByIdAsync(id);
             
-            return vehicleMake==null ? NotFound() : View(vehicleMake);
+            return vehicle==null ? NotFound() : View(vehicle);
+	    
         }
         
         // GET: VehicleMake/Create
 	public IActionResult Create()
         {
+	
             return View();
+	    
         }
 
 
@@ -89,8 +97,8 @@ namespace monoMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-	        _service.addVehicle<VehicleMake>(vehicleMake);
-		await _service.saveChangesAsync();
+	        _service.AddVehicle<VehicleMake>(vehicleMake);
+		await _service.SaveChangesAsync();
                
                 return RedirectToAction(nameof(Index));
             }
@@ -100,7 +108,7 @@ namespace monoMVC.Controllers
 	// GET: VehicleMake/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var vehicleMake = await _service.getVehicleByIdAsync(id);
+            var vehicleMake = await _service.GetVehicleByIdAsync(id);
             
             return vehicleMake==null ? NotFound() : View(vehicleMake);
         }
@@ -111,9 +119,9 @@ namespace monoMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Abbrevation")] VehicleMake vehicleMake)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Abbrevation")] VehicleMake vehicle)
         {
-            if (id != vehicleMake.Id)
+            if (id != vehicle.Id)
             {
                 return NotFound();
             }
@@ -122,12 +130,12 @@ namespace monoMVC.Controllers
             {
                 try
                 {
-		    _service.updateVehicle<VehicleMake>(vehicleMake);
-                    await _service.saveChangesAsync();
+		    _service.UpdateVehicle<VehicleMake>(vehicle);
+                    await _service.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VehicleMakeExists(vehicleMake.Id))
+                    if (!VehicleMakeExists(vehicle.Id))
                     {
                         return NotFound();
                     }
@@ -138,14 +146,14 @@ namespace monoMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(vehicleMake);
+            return View(vehicle);
         }
         
         // GET: VehicleMake/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
 	
-	    var vehicleMake = await _service.getVehicleByIdAsync(id);
+	    var vehicleMake = await _service.GetVehicleByIdAsync(id);
            
 	    return vehicleMake==null ? NotFound() : View(vehicleMake);
 
@@ -156,16 +164,16 @@ namespace monoMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-	    var vehicleMake = await _service.getVehicleByIdAsync(id);
-	    _service.removeVehicle(vehicleMake);
-	    await _service.saveChangesAsync();
+	    var vehicleMake = await _service.GetVehicleByIdAsync(id);
+	    _service.RemoveVehicle(vehicleMake);
+	    await _service.SaveChangesAsync();
            
             return RedirectToAction(nameof(Index));
         }
 	
         private bool VehicleMakeExists(int id)
         {
-	    var vehicleMake = _service.getVehicleByIdAsync(id);
+	    var vehicleMake = _service.GetVehicleByIdAsync(id);
 
 	    return vehicleMake==null?false:true;
 	    

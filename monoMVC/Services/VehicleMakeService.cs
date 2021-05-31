@@ -27,7 +27,7 @@ namespace monoMVC.Services
 			_mapper = mapper;
  		}
  		
-		public async Task<List<VehicleMake>> getVehiclesAsync()
+		public async Task<List<VehicleMake>> GetVehiclesAsync()
     		{
     			 
     			var res = await _context.VehicleMake.AsNoTracking().Include(s => s.VehicleModel).Select(s => s.MapVehicleMakeResponse()).ToListAsync();
@@ -36,7 +36,7 @@ namespace monoMVC.Services
     					 
     		}
     		
-    		public async Task<VehicleMake> getVehicleByIdAsync(int id)
+    		public async Task<VehicleMake> GetVehicleByIdAsync(int id)
     		{
 		
     			var res = await _context.VehicleMake.AsNoTracking().SingleOrDefaultAsync(v => v.Id==id);			
@@ -45,7 +45,7 @@ namespace monoMVC.Services
     			
     		}
     		  		
-    		public async Task<List<VehicleMake>> getSortedVehiclesAsync(string sortOrder, string searchString, int currentPage, int pageSize)
+    		public async Task<List<VehicleMake>> GetSortedVehiclesAsync(string sortOrder, string searchString, int currentPage, int pageSize)
     		{
 			var res = new List<VehicleDTO.VehicleMakeResponse>();
 
@@ -70,7 +70,7 @@ namespace monoMVC.Services
     					res = await _context.VehicleMake.AsNoTracking().OrderByDescending(v => v.Abbrevation).Skip((currentPage-1)*pageSize).Take(pageSize).Select(v => v.MapVehicleMakeResponse()).ToListAsync();
     					break;
     				default:
-    					res = await _context.VehicleMake.AsNoTracking().OrderBy(v => v.Id).Skip((currentPage-1)*pageSize).Take(pageSize).Select(v => v.MapVehicleMakeResponse()).ToListAsync();
+    					//res = await _context.VehicleMake.AsNoTracking().OrderBy(v => v.Id).Skip((currentPage-1)*pageSize).Take(pageSize).Select(v => v.MapVehicleMakeResponse()).ToListAsync();
     					break;
     				}
     			 
@@ -78,12 +78,12 @@ namespace monoMVC.Services
     		
     		}
     		
-    		public int getCount()
+    		public Task<int> GetCountAsync()
     		{
-    			return _context.VehicleMake.Count();
+    			return _context.VehicleMake.CountAsync();
     		}
     		
-    		public async Task saveChangesAsync()
+    		public async Task SaveChangesAsync()
     		{
 			try
 			{
@@ -96,7 +96,7 @@ namespace monoMVC.Services
 			
     		}
     		
-    		public void addVehicle<T>(T vehicle)
+    		public void AddVehicle<T>(T vehicle)
     		{
 			try
 			{
@@ -108,7 +108,7 @@ namespace monoMVC.Services
 			}
     		}
     		
-    		public void updateVehicle<T>(T vehicle)
+    		public void UpdateVehicle<T>(T vehicle)
     		{
 			try
 			{
@@ -120,7 +120,7 @@ namespace monoMVC.Services
 			}
     		}
     		
-    		public void removeVehicle(VehicleMake vehicle)
+    		public void RemoveVehicle(VehicleMake vehicle)
     		{
 			try
 			{

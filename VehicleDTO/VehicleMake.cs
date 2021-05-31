@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VehicleDTO
 {
-    public class VehicleMake
+    public class VehicleMake :  IComparable<VehicleMake>
     {
     
        public int Id { get; set; }
@@ -20,6 +20,13 @@ namespace VehicleDTO
        [StringLength(100, MinimumLength=3)]
        [Display(Name="Vehicle Abbrevation")]
        public string Abbrevation { get; set; }
+
+       public int CompareTo(VehicleMake other)
+       {
+
+		return this.Id.CompareTo(other.Id);
+
+       }
  
     }
 }

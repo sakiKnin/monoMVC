@@ -27,7 +27,7 @@ namespace monoMVC.Services
 			_mapper = mapper;
  		}
  		
-    		public async Task<List<VehicleModel>> getVehiclesAsync()
+    		public async Task<List<VehicleModel>> GetVehiclesAsync()
     		{
     			
     			var res = await _context.VehicleModel.AsNoTracking().Include(v => v.VehicleMake).Select(v => v.MapVehicleModelResponse()).ToListAsync();
@@ -35,7 +35,7 @@ namespace monoMVC.Services
     			return _mapper.Map<List<VehicleModel>>(res);				 
     		}
     		
-    		public async Task<VehicleModel> getVehicleByIdAsync(int id)
+    		public async Task<VehicleModel> GetVehicleByIdAsync(int id)
     		{
     			var res = await _context.VehicleModel
 			    	  	.AsNoTracking()
@@ -45,7 +45,7 @@ namespace monoMVC.Services
     			return _mapper.Map<VehicleModel>(res.MapVehicleModelResponse());
     		}
     		
-    		public async Task<List<VehicleModel>> getSortedVehiclesAsync(string sortOrder, string searchString, int currentPage, int pageSize)
+    		public async Task<List<VehicleModel>> GetSortedVehiclesAsync(string sortOrder, string searchString, int currentPage, int pageSize)
     		{
 
 			var res = new List<VehicleDTO.VehicleModelResponse>();
@@ -79,13 +79,13 @@ namespace monoMVC.Services
     		
     		}
     		
-    		public int getCount(){
+    		public async Task<int> GetCountAsync(){
     			
-    			return _context.VehicleModel.Count();
+    			return await _context.VehicleModel.CountAsync();
   
     		}
     		
-    		public async Task<List<VehicleMake>> getVehiclesMakeWithoutVModelAsync()
+    		public async Task<List<VehicleMake>> GetVehiclesMakeWithoutVModelAsync()
     		{
 		
     			var res = await _context.VehicleMake.AsNoTracking().Where(v => v.VehicleModel.Equals(null)).Select(v => v.MapVehicleMakeResponse()).ToListAsync();
@@ -94,7 +94,7 @@ namespace monoMVC.Services
 			
     		} 		
     		
-    		public async Task saveChangesAsync()
+    		public async Task SaveChangesAsync()
     		{
 			try
 			{
@@ -106,7 +106,7 @@ namespace monoMVC.Services
 			}
     		}
     		
-    		public void addVehicle<T>(T vehicle)
+    		public void AddVehicle<T>(T vehicle)
     		{
 			try
 			{
@@ -119,7 +119,7 @@ namespace monoMVC.Services
 			
     		}
     		
-    		public void updateVehicle<T>(T vehicle)
+    		public void UpdateVehicle<T>(T vehicle)
     		{
 			try
 			{
@@ -131,7 +131,7 @@ namespace monoMVC.Services
 			}
     		}
     		
-    		public void removeVehicle(VehicleModel vehicle)
+    		public void RemoveVehicle(VehicleModel vehicle)
     		{
 			try
 			{
