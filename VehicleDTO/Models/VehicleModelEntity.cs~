@@ -1,0 +1,39 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
+
+using Microsoft.EntityFrameworkCore;
+
+//using monoMVC.Services;
+using VehicleDTO.Data;
+
+namespace VehicleDTO.Models
+{
+    public class VehicleModelEntity : VehicleModel
+    {
+
+	private readonly ApplicationDbContext _context;
+
+	public VehicleModelEntity(ApplicationDbContext context)
+	{
+
+			_context = context;
+
+	}
+
+
+        public VehicleMakeEntity VehicleMakeEntity { get; set; }
+
+	public static async Task<List<VehicleModelEntity>> GetVehiclesAsync()
+	{
+
+			var entityList = await _context.VehicleMakeEntity.ToListAsync();
+	
+			return new List<VehicleModelEntity>();
+			//return ;
+			
+	}
+    }
+}

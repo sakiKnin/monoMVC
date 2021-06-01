@@ -20,8 +20,6 @@ namespace VehicleDTO.Models
         [StringLength(100, MinimumLength=3)]
         [Display(Name="Vehicle Abbrevation")]
         public string Abbrevation { get; set; }
-
-	public VehicleModel VehicleModel { get; set; }
  
      }
 }

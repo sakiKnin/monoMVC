@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-
+using VehicleDTO.Data;
 using VehicleDTO.Models;
 using monoMVC.Services;
 
@@ -13,42 +13,36 @@ namespace monoMVC.Controllers
 {
     public class VehicleModelController : Controller
     {
-      
+
 	private readonly IVehicleModelService _service;
 
-        public VehicleModelController(IVehicleModelService service)
-        {
-	
-	    _service = service;
-	    
-        }
+	public VehicleModelController(IVehicleModelService service){
+
+	       		    _service = service;
+
+	}
 
         // GET: VehicleModel
         public async Task<IActionResult> Index()
         {
-	    var applicationDbContext = _service.GetVehiclesAsync();
-            return View(await applicationDbContext);
+	
+		var vehicles = await _service.GetVehiclesAsync();
+
+		return View(vehicles);
+	    
         }
 
         // GET: VehicleModel/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var vehicle = await _service.GetVehicleByIdAsync(id);
-            if (vehicle == null)
-            {
-	    
-                return NotFound();
-		
-            }
-
-            return View(vehicle);
+           return View();
         }
 
         // GET: VehicleModel/Create
         public async Task<IActionResult> Create()
         {
 	
-	    ViewData["MakeId"] = new SelectList(await _service.GetVehiclesMakeWithoutVModelAsync(), "Id", "Name");
+
             return View();
 	    
         }
@@ -60,31 +54,15 @@ namespace monoMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,MakeId,Name,Abbrevation")] VehicleModel vehicle)
         {
-            if (ModelState.IsValid)
-            {
-                _service.AddVehicle<VehicleModel>(vehicle);
-                await _service.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-	   
-            return View(vehicle);
+          
+            return View();
         }
 
         // GET: VehicleModel/Edit/5
         public async Task<IActionResult> Edit(int id)
         {  
-            var vehicle = await _service.GetVehicleByIdAsync(id);
-
-	    if (vehicle == null)
-            {
-	    
-                return NotFound();
-		
-            }
-	    
-	    ViewData["MakeId"] = vehicle.MakeId;
-	    
-            return View(vehicle);
+         
+            return View();
 	    
         }
 
@@ -95,53 +73,8 @@ namespace monoMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,MakeId,Name,Abbrevation")] VehicleModel vehicle)
         {
-            if (id != vehicle.Id)
-            {
-	    
-                return NotFound();
-		
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-		
-                   _service.UpdateVehicle<VehicleModel>(vehicle);
-                   await _service.SaveChangesAsync();
-		   
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!VehicleModelExists(vehicle.Id))
-                    {
-		    
-                        return NotFound();
-			
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-	    
-            return View(vehicle);
-        }
-
-        // GET: VehicleModel/Delete/5
-        public async Task<IActionResult> Delete(int id)
-        {
-
-            var vehicle = await _service.GetVehicleByIdAsync(id);
-	    
-            if (vehicle == null)
-            {
-                return NotFound();
-            }
-
-            return View(vehicle);
+            
+            return View();
         }
 
         // POST: VehicleModel/Delete/5
@@ -149,23 +82,11 @@ namespace monoMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var vehicleModel = await _service.GetVehicleByIdAsync(id);
-            _service.RemoveVehicle(vehicleModel);
-            await _service.SaveChangesAsync();
+          
             return RedirectToAction(nameof(Index));
         }
 
-        private bool VehicleModelExists(int id)
-        {
-	    if(_service.GetVehicleByIdAsync(id)==null)
-	    {
-				return true; 
-	    }
-	    else
-	    {
-				return false;
-	    }
-        }
+      
     }
 }
 

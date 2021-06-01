@@ -13,23 +13,23 @@ namespace VehicleDTO.Data
 	
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<VehicleMake>()
+            modelBuilder.Entity<VehicleMakeEntity>()
 			.HasIndex(a => a.Id)
             		.IsUnique();
 
-	    modelBuilder.Entity<VehicleModel>()
+	    modelBuilder.Entity<VehicleModelEntity>()
 			.HasKey(ca => ca.Id);
 
 	    // one-to-one relationship between VehicleMake and VehicleModel
-	    modelBuilder.Entity<VehicleMake>()
-			    .HasOne(a => a.VehicleModel)
-			    .WithOne(a => a.VehicleMake)
-            		    .HasForeignKey<VehicleModel>(a => a.MakeId).HasConstraintName("VehicleModelFK");
+	    modelBuilder.Entity<VehicleMakeEntity>()
+			    .HasOne(a => a.VehicleModelEntity)
+			    .WithOne(a => a.VehicleMakeEntity)
+            		    .HasForeignKey<VehicleModelEntity>(a => a.MakeId).HasConstraintName("VehicleModelFK");
 
 	}
 	
-        public DbSet<VehicleMake> VehicleMake { get; set; } 
-        public DbSet<VehicleModel> VehicleModel { get; set; }
+        public DbSet<VehicleMakeEntity> VehicleMakeEntity { get; set; } 
+        public DbSet<VehicleModelEntity> VehicleModelEntity { get; set; }
 	
     }
 }

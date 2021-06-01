@@ -1,0 +1,35 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
+
+using Microsoft.EntityFrameworkCore;
+
+
+using VehicleDTO.Data;
+
+namespace VehicleDTO.Models
+{
+    public class VehicleMakeEntity : VehicleMake
+    {
+
+	private readonly ApplicationDbContext _context;
+
+	public VehicleMakeEntity(ApplicationDbContext context)
+	{
+
+			_context = context;
+
+	}
+
+        public VehicleModelEntity VehicleModelEntity { get; set; }
+
+	public async Task<List<VehicleMakeEntity>> GetVehicles()
+	{
+	
+			return await _context.VehicleMakeEntity.AsNoTracking().ToListAsync();
+			
+	}
+    }
+}

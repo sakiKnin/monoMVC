@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using monoMVC.Models;
+using VehicleDTO.Models;
 
 namespace monoMVC
 {
@@ -12,8 +12,10 @@ namespace monoMVC
 	{
 		public VehicleProfile()
 		{
-			CreateMap<VehicleDTO.Models.VehicleMakeResponse, VehicleDTO.Models.VehicleMake>();
-			CreateMap<VehicleDTO.Models.VehicleModelResponse, VehicleDTO.Models.VehicleModel>();
+			CreateMap<VehicleMakeEntity, VehicleMake>();
+			CreateMap<VehicleMake, VehicleMakeEntity>();
+			CreateMap<VehicleModelEntity, VehicleModel>();
+			CreateMap<VehicleModel, VehicleModelEntity>();
 		}
 	}
 }
