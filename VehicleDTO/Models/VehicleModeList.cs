@@ -10,25 +10,34 @@ using VehicleDTO.Data;
 
 namespace VehicleDTO.Models
 {
-   public class VehicleModelList : IVehicleModelList
+   public class VehicleModelList : List<VehicleModelEntity>
    {
 
-	public List<VehicleModelEntity> vehicleModelList = new List<VehicleModelEntity>();
+	public static List<VehicleModelEntity> vehicleModelList { get; set; } = new List<VehicleModelEntity>();
 
 	private readonly ApplicationDbContext _context;
 
 	public VehicleModelList(ApplicationDbContext context)
 	{
+		
+				_context = context;
+				
+				vehicleModelList = GetVehiclesEntity();
+								
+	}
 
-	       			_context = context;
+	public List<VehicleModelEntity> GetVehiclesEntity()
+	{
+
+		return _context.VehicleModelEntity.AsNoTracking().ToList();
 
 	}
         
-	public async Task<List<VehicleModelEntity>> GetVehiclesAsync()
+	public static List<VehicleModelEntity> GetVehicles()
   	{
 
-			return await _context.VehicleModelEntity.ToListAsync();
-			
+			return vehicleModelList;
+					
 	}
    
       		

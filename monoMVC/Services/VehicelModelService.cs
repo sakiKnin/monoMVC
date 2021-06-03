@@ -13,21 +13,11 @@ namespace monoMVC.Services
 	public class VehicleModelService : IVehicleModelService
 	{
 	
- 		private readonly ApplicationDbContext _context;
-		
- 		public VehicleModelService(ApplicationDbContext context)
- 		{
-		
-				_context = context;
-				
- 		}
- 		
     		public async Task<List<VehicleModelEntity>> GetVehiclesAsync()
     		{
 
-			var vehicles = new VehicleModelList( _context );
-    			
-    			return await vehicles.GetVehiclesAsync();		 
+    			return VehicleModelList.GetVehicles();
+			
     		}
     
 	}
