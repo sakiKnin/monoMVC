@@ -32,15 +32,7 @@ namespace VehicleDTO.Models
 		return _context.VehicleModelEntity.AsNoTracking().ToList();
 
 	}
-        
-	public static List<VehicleModelEntity> GetVehicles()
-  	{
-
-			return vehicleModelList;
-					
-	}
-   
-      		
+     
     }
 
 }

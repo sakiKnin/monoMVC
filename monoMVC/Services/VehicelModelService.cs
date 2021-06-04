@@ -16,7 +16,7 @@ namespace monoMVC.Services
     		public async Task<List<VehicleModelEntity>> GetVehiclesAsync()
     		{
 
-    			return VehicleModelList.GetVehicles();
+    			return VehicleModelList.vehicleModelList;
 			
     		}
     
