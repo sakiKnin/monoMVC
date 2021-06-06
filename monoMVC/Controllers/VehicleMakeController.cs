@@ -6,8 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
-using VehicleDTO.Models;
-
+using monoMVC.Models;
 using monoMVC.Services;
 
 namespace monoMVC.Controllers
@@ -70,7 +69,7 @@ namespace monoMVC.Controllers
 		
 		var veh = await _service.GetSortedVehiclesAsync(sortOrder, searchString, currentPage ?? 1, pageSize);
 		
-	        return View(await PaginatedList<VehicleMakeEntity>.CreateAsync(veh, count, currentPage ?? 1, pageSize));	
+	        return View(await PaginatedList<VehicleMakeView>.CreateAsync(veh, count, currentPage ?? 1, pageSize));	
 	   }
 
            
@@ -100,13 +99,13 @@ namespace monoMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Abbrevation")] VehicleMakeEntity vehicle)
+        public async Task<IActionResult> Create([Bind("Id,Name,Abbrevation")] VehicleMakeView vehicle)
         {
 	
             if (ModelState.IsValid)
             {
 	    
-	        _service.AddVehicle<VehicleMakeEntity>(vehicle);
+	        _service.AddVehicle<VehicleMakeView>(vehicle);
 		await _service.SaveChangesAsync();
                
                 return RedirectToAction(nameof(Index));
@@ -120,9 +119,9 @@ namespace monoMVC.Controllers
         public async Task<IActionResult> Edit(int id)
         {
 	
-            var vehicleMake = await _service.GetVehicleByIdAsync(id);
+            var vehicle = await _service.GetVehicleByIdAsync(id);
             
-            return vehicleMake==null ? NotFound() : View(vehicleMake);
+            return vehicle==null ? NotFound() : View(vehicle);
 	    
         }
 
@@ -132,7 +131,7 @@ namespace monoMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Abbrevation")] VehicleMake vehicle)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Abbrevation")] VehicleMakeView vehicle)
         {
             if (id != vehicle.Id)
             {
@@ -146,7 +145,7 @@ namespace monoMVC.Controllers
                 try
                 {
 		
-		    _service.UpdateVehicle<VehicleMake>(vehicle);
+		    _service.UpdateVehicle<VehicleMakeView>(vehicle);
                     await _service.SaveChangesAsync();
 		    
                 }
@@ -177,9 +176,9 @@ namespace monoMVC.Controllers
         public async Task<IActionResult> Delete(int id)
         {
 	
-	    var vehicleMake = await _service.GetVehicleByIdAsync(id);
+	    var vehicle = await _service.GetVehicleByIdAsync(id);
            
-	    return vehicleMake==null ? NotFound() : View(vehicleMake);
+	    return vehicle==null ? NotFound() : View(vehicle);
 
 	 }
              

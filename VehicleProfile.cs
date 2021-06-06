@@ -5,18 +5,22 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using monoMVC.Models;
-using VehicleDTO.Models;
+using VehicleDTO.Modles;
 
 namespace monoMVC
 {
 	public class VehicleProfile : Profile
 	{
+	
 		public VehicleProfile()
 		{
-			CreateMap<VehicleMakeEntity, VehicleMakeView>();
+		
 			CreateMap<VehicleMakeView, VehicleMakeEntity>();
-			CreateMap<VehicleModelEntity, VehicleModelView>();
 			CreateMap<VehicleModelView, VehicleModelEntity>();
+			CreateMap<VehicleMakeEntity, VehicleMakeView>();
+			CreateMap<VehicleModelEntity, VehicleModelView>();
+			
 		}
+		
 	}
 }

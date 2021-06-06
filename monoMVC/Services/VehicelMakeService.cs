@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
+using monoMVC.Models;
 using VehicleDTO.Models;
 using VehicleDTO.Data;
 
@@ -14,33 +16,35 @@ namespace monoMVC.Services
 	{
 	
  		private readonly ApplicationDbContext _context;
+		private readonly IMapper _mapper;
  		
- 		public VehicleMakeService(ApplicationDbContext context)
+ 		public VehicleMakeService(ApplicationDbContext context, IMapper mapper)
  		{
 		
  			_context = context;
+			_mapper = mapper;
 			
  		}
  		
-		public async Task<List<VehicleMakeEntity>> GetVehiclesAsync()
+		public async Task<List<VehicleMakeView>> GetVehiclesAsync()
     		{
     			 
     			var entityList = await _context.VehicleMakeEntity.AsNoTracking().Include(s => s.VehicleModelEntity).ToListAsync();
     			 
-    			return entityList;
+    			return _mapper.Map<List<VehicleMakeView>>(entityList);
     					 
     		}
     		
-    		public async Task<VehicleMakeEntity> GetVehicleByIdAsync(int id)
+    		public async Task<VehicleMakeView> GetVehicleByIdAsync(int id)
     		{
 		
     			var entity = await _context.VehicleMakeEntity.AsNoTracking().SingleOrDefaultAsync(v => v.Id==id);			
 
-    			return entity;
+    			return _mapper.Map<VehicleMakeView>(entity);
     			
     		}
     		  		
-    		public async Task<List<VehicleMakeEntity>> GetSortedVehiclesAsync(string sortOrder, string searchString, int currentPage, int pageSize)
+    		public async Task<List<VehicleMakeView>> GetSortedVehiclesAsync(string sortOrder, string searchString, int currentPage, int pageSize)
     		{
 			var entityList = new List<VehicleMakeEntity>();
 
@@ -49,7 +53,7 @@ namespace monoMVC.Services
 			
 				entityList = await _context.VehicleMakeEntity.AsNoTracking().Where(v => v.Name.Contains(searchString)).ToListAsync();
     			 
-				return entityList;
+				return _mapper.Map<List<VehicleMakeView>>(entityList);
 				
 			}
 				
@@ -69,13 +73,15 @@ namespace monoMVC.Services
     					break;
     				}
     			 
-    			return entityList;
+    			return _mapper.Map<List<VehicleMakeView>>(entityList);
     		
     		}
     		
     		public Task<int> GetCountAsync()
     		{
+		
     			return _context.VehicleMakeEntity.CountAsync();
+			
     		}
     		
     		public async Task SaveChangesAsync()
@@ -95,11 +101,15 @@ namespace monoMVC.Services
     		{
 			try
 			{
-				_context.Add(vehicle);
+			
+				_context.Add(_mapper.Map<VehicleMakeEntity>(vehicle));
+				
 			}
 			catch(Exception e)
 			{
+			
 				Console.WriteLine(e);
+				
 			}
     		}
     		
@@ -107,23 +117,31 @@ namespace monoMVC.Services
     		{
 			try
 			{
-				_context.Update(vehicle);
+			
+				_context.Update(_mapper.Map<VehicleMakeEntity>(vehicle));
+				
 			}
 			catch(Exception e)
 			{
-				Console.WriteLine(e);	
+			
+				Console.WriteLine(e);
+				
 			}
     		}
     		
-    		public void RemoveVehicle(VehicleMakeEntity vehicle)
+    		public void RemoveVehicle(VehicleMakeView vehicle)
     		{
 			try
 			{
-				_context.VehicleMakeEntity.Remove(vehicle);
+			
+				_context.VehicleMakeEntity.Remove(_mapper.Map<VehicleMakeEntity>(vehicle));
+				
     			}
 			catch(Exception e)
 			{
-				Console.WriteLine(e);	 
+			
+				Console.WriteLine(e);
+				
 			}
 		}
 		

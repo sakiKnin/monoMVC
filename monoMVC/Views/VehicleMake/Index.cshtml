@@ -1,13 +1,13 @@
-@model PaginatedList<VehicleDTO.Models.VehicleMakeEntity>
+@model PaginatedList<monoMVC.Models.VehicleMakeView>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "VehicleMake Views";
 }
 
-<h1>Index</h1>
+<h1>VehicleMake View</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
 
 @if(Model==null)
@@ -21,7 +21,7 @@ else
       	   <p>
 		Find by name:<input type="text" name="searchString" value="@ViewData["CurrentFilter"]"/>
 		<input type="submit" value="Search" class="btn btn-success">
-		<a asp-action="Index">Back to full list</a>
+		<a asp-action="Index" class="btn btn-secondary">Back to full list</a>
 	   </p>
       </div>
       <div>

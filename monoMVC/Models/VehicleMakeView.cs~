@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 
-using VehicleDTO.Data;
-
-namespace VehicleDTO.Models
+namespace monoMVC.Models
 {
-    public class VehicleModelEntity : VehicleModel
+    public class VehicleMakeView : VehicleDTO.VehicleMake
     {
 
-        public VehicleMakeEntity VehicleMakeEntity { get; set; }
+          public VehicleModelView VehicleModelView { get; set; }
 
     }
 }
